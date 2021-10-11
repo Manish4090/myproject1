@@ -55,6 +55,15 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 		Route::post('update-users-management/{id}', 'UserController@updateusersmanage')->name('update-users-management');
 		Route::any('delete-users-management/{id}', 'UserController@userdestroy')->name('delete-users-management');
 		
+		//categories Routes
+		Route::get('categories', 'CategoriesController@index')->name('categories');
+		Route::get('show-categories/{id}', 'CategoriesController@showcategories')->name('show-categories');
+		Route::get('edit-categories/{id}', 'CategoriesController@editcategories')->name('edit-categories');
+		Route::post('update-categories/{id}', 'CategoriesController@updatecategories')->name('update-categories');
+		Route::any('add-categories', 'CategoriesController@addcategories')->name('add-categories');
+		Route::any('store-categories', 'CategoriesController@storecategories')->name('store-categories');
+		
+		
 	});
 	Route::post('logout','Auth\AuthenticatedSessionController@destroy')->name('logout');
 	

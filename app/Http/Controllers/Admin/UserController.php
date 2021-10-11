@@ -9,9 +9,10 @@ use App\Models\UsersAddress;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\Admin;
+use App\Models\Role;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+//use Spatie\Permission\Models\Role;
 use DB;
 
 class UserController extends Controller
@@ -129,19 +130,21 @@ class UserController extends Controller
 	public function usersmanagement(Request $request)
     {
 		
-        $data = Admin::orderBy('id','DESC')->get();
+        $data = Admin::orderBy('id','DESC')->with('roles')->get();
+		
 		//dd($data);
         return view('admin.users.usersmanagement',compact('data'));
     }
 	
 	
 	public function usersmanagementinfo($id){
-        $userManageDetails = User::find($id);
+        $userManageDetails = Admin::find($id);
 		//dd($user);
         return view('admin.users.user_management_show',compact('userManageDetails'));
     }
 	
 	public function usersmanage(){
+		
         $roles = Role::pluck('name','name')->all();
         return view('admin.users.create_user_management',compact('roles'));
     }
@@ -157,25 +160,30 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
     
-        $input['password'] = Hash::make($input['password']);
+       /* $input['password'] = Hash::make($input['password']);
     
         $user = User::create($input);
-        $user->assignRole($request->input('roles'));
+        $user->assignRole($request->input('roles'));*/
 		
         return view('admin.users.create_user_management')
                         ->with('success','User created successfully');
     }
 	
 	public function editusersmanage($id) {
-        $user = User::find($id);
-        $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
-    
-        return view('admin.users.edit_user_management',compact('user','roles','userRole'));
+        $user = Admin::find($id)->with('roles')->first();
+		$roles = Role::pluck('name','name')->all();
+        //$userRole = $user->roles->pluck('name','name')->all();
+        return view('admin.users.edit_user_management',compact('user','roles'));
+        //return view('admin.users.edit_user_management',compact('user'));
     }
 	
 	public function updateusersmanage(Request $request, $id)
     {
+		
+        $input = $request->all();
+        $user = Admin::find($id);
+		$user->roles()->attach($request->input('roles'));
+		dd("Done");
 		
         $this->validate($request, [
             'name' => 'required',
@@ -183,19 +191,17 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
     
-        $input = $request->all();
         if(!empty($input['password'])){ 
             $input['password'] = Hash::make($input['password']);
         }else{
-                        $input['password'] = Hash::make($input['password']); 
+            $input['password'] = Hash::make($input['password']); 
         }
     
-        $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+        //DB::table('model_has_roles')->where('model_id',$id)->delete(); $user->roles()->attach($role);
     
         $user->assignRole($request->input('roles'));
-		$data = User::orderBy('id','DESC')->get();
+		$data = Admin::orderBy('id','DESC')->get();
         //return view('admin.users.usersmanagement',compact('data'))
 		return redirect('admin/usersmanagement')
                         ->with('success','User updated successfully');

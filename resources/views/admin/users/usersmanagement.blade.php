@@ -38,11 +38,8 @@
     <td>{{ $user->email }}</td>
     <td>
 	
-      @if(!empty($user->getRoleNames()))
-        @foreach($user->getRoleNames() as $v)
-           <label class="badge badge-success">{{ $v }}</label>
-        @endforeach
-      @endif
+           <label class="badge badge-success">{{ $user->roles['name'] }}</label>
+       
     </td>
     <td>
        <a class="btn btn-info" href="{{ url('admin/usersmanagement',$user->id) }}">Show</a>

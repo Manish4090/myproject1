@@ -16,6 +16,6 @@ class Permission extends Model
     }
 
     public function users(){
-        return $this->belongsTomany(User::class,'users_permissions');
+        return $this->belongsTomany(Admin::class,'users_permissions');
     }
 }

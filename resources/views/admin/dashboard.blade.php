@@ -1,19 +1,12 @@
 <x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-			@role('admin')
-            {{ __('Admin Dashboard') }}
-			@endrole
-			@role('editor')
-            {{ __('Editor Dashboard') }}
-			@endrole
 			
-			@permission('add-post')
-			<button type="button">Add Product</button>
-			@endpermission
-			@permission('delete-post')
-			<button type="button">Delete Product</button>
-			@endpermission
+            {{ __('Admin Dashboard') }}
+			
+			
+			
+			
         </h2>
     </x-slot>
 

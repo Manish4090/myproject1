@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+    protected $table = 'roles';
     protected $fillable = ['name','slug'];
 
     public function permissions(){
@@ -15,7 +16,7 @@ class Role extends Model
     }
 
     public function users(){
-        return $this->belongsTomany(User::class,'users_roles');
+        return $this->belongsTo('App\Models\Admin');
     }
 
 

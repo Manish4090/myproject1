@@ -53,4 +53,12 @@
             </div>
         </form>
     </x-auth-card>
+	<x-button class="ml-3">
+                   <a href="{{ url('/facebook') }}" class="btn btn-lg btn-primary btn-block">
+                <strong>Login With Facebook</strong>
+            </a>
+			</x-button>
+			<x-button class="ml-3">
+                    <a href="{{ url('/google') }}">Login With Google</a>
+                </x-button>
 </x-guest-layout>
